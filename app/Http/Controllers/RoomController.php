@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Logger;
+use App\Models\Booking;
 use App\Models\Room;
 use Illuminate\Http\Request;
 
@@ -16,8 +17,7 @@ class RoomController extends Controller
             $searchTerm = strtolower($request->search);
 
             $query->where(function ($q) use ($searchTerm) {
-                $q->whereRaw('LOWER(room_number) LIKE ?', ["%{$searchTerm}%"])
-                    ->orWhereRaw('LOWER(room_type) LIKE ?', ["%{$searchTerm}%"]);
+                $q->whereRaw('LOWER(room_number) LIKE ?', ["%{$searchTerm}%"]);
             });
         }
 
@@ -25,8 +25,36 @@ class RoomController extends Controller
             $query->where('status', $request->status);
         }
 
-        $rooms = $query->latest()->paginate(10);
+        if ($request->filled('type')) {
+            $query->where('room_type', $request->type);
+        }
 
+        if ($request->filled('floor')) {
+            $query->where('floor', $request->floor);
+        }
+
+        if ($request->filled('capacity')) {
+            $query->where('capacity', '>=', $request->capacity);
+        }
+
+        if ($request->filled('start_date') && $request->filled('end_date')) {
+            $start = $request->start_date;
+            $end = $request->end_date;
+
+            $bookedRoomIds = Booking::where('status', 'Confirmed')
+                ->where(function ($q) use ($start, $end) {
+                    $q->whereBetween('check_in', [$start, $end])
+                        ->orWhereBetween('check_out', [$start, $end])
+                        ->orWhere(function ($inner) use ($start, $end) {
+                            $inner->where('check_in', '<=', $start)
+                                ->where('check_out', '>=', $end);
+                        });
+                })->pluck('room_id');
+
+            $query->whereNotIn('id', $bookedRoomIds);
+        }
+
+        $rooms = $query->latest()->paginate(10);
         return view('dashboard.pages.rooms.index', compact('rooms'));
     }
 

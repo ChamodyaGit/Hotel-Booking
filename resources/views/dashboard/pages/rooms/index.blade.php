@@ -13,28 +13,77 @@
             </a>
         </div>
 
-        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 mb-6">
-            <form action="{{ route('rooms.index') }}" method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search room number..."
-                    class="block w-full px-4 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-gray-700 bg-white">
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-6">
+            <form action="{{ route('rooms.index') }}" method="GET" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                    <div>
+                        <label class="text-xs font-bold text-gray-500 uppercase">Room No</label>
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Ex: 101"
+                            class="block w-full px-3 py-2 border border-gray-300 rounded-md text-sm">
+                    </div>
 
-                <select name="status"
-                    class="block w-full px-4 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-gray-700 bg-white">
-                    <option value="">All Statuses</option>
-                    <option value="Available" {{ request('status') == 'Available' ? 'selected' : '' }}>Available</option>
-                    <option value="Booked" {{ request('status') == 'Booked' ? 'selected' : '' }}>Booked</option>
-                    <option value="Cleaning" {{ request('status') == 'Cleaning' ? 'selected' : '' }}>Cleaning</option>
-                </select>
+                    <div>
+                        <label class="text-xs font-bold text-gray-500 uppercase">Type</label>
+                        <select name="type" class="block w-full px-3 py-2 border border-gray-300 rounded-md text-sm">
+                            <option value="">All Types</option>
+                            <option value="Single" {{ request('type') == 'Single' ? 'selected' : '' }}>Single</option>
+                            <option value="Double" {{ request('type') == 'Double' ? 'selected' : '' }}>Double</option>
+                            <option value="Suite" {{ request('type') == 'Suite' ? 'selected' : '' }}>Suite</option>
+                        </select>
+                    </div>
 
-                <button type="submit"
-                    class="bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-900 transition">
-                    Filter Results
-                </button>
+                    <div>
+                        <label class="text-xs font-bold text-gray-500 uppercase">Status</label>
+                        <select name="status" class="block w-full px-3 py-2 border border-gray-300 rounded-md text-sm">
+                            <option value="">All Statuses</option>
+                            <option value="Available" {{ request('status') == 'Available' ? 'selected' : '' }}>Available
+                            </option>
+                            <option value="Booked" {{ request('status') == 'Booked' ? 'selected' : '' }}>Booked</option>
+                            <option value="Cleaning" {{ request('status') == 'Cleaning' ? 'selected' : '' }}>Cleaning
+                            </option>
+                            <option value="Maintenance" {{ request('status') == 'Maintenance' ? 'selected' : '' }}>
+                                Maintenance</option>
+                        </select>
+                    </div>
 
-                @if (request()->has('search') || request()->has('status'))
-                    <a href="{{ route('rooms.index') }}"
-                        class="text-red-500 text-sm flex items-center hover:underline">Clear All</a>
-                @endif
+                    <div>
+                        <label class="text-xs font-bold text-gray-500 uppercase">From Date</label>
+                        <input type="date" name="start_date" value="{{ request('start_date') }}"
+                            class="block w-full px-3 py-2 border border-gray-300 rounded-md text-sm">
+                    </div>
+
+                    <div>
+                        <label class="text-xs font-bold text-gray-500 uppercase">To Date</label>
+                        <input type="date" name="end_date" value="{{ request('end_date') }}"
+                            class="block w-full px-3 py-2 border border-gray-300 rounded-md text-sm">
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between pt-2 border-t border-gray-50">
+                    <div class="flex space-x-4">
+                        <div class="flex flex-col">
+                            <label class="text-[10px] font-bold text-gray-400 uppercase">Floor</label>
+                            <input type="number" name="floor" value="{{ request('floor') }}" placeholder="Any"
+                                class="w-20 px-2 py-1 border border-gray-200 rounded text-sm">
+                        </div>
+                        <div class="flex flex-col">
+                            <label class="text-[10px] font-bold text-gray-400 uppercase">Min Capacity</label>
+                            <input type="number" name="capacity" value="{{ request('capacity') }}" placeholder="Any"
+                                class="w-24 px-2 py-1 border border-gray-200 rounded text-sm">
+                        </div>
+                    </div>
+
+                    <div class="flex space-x-3 items-center">
+                        @if (request()->anyFilled(['search', 'status', 'type', 'floor', 'capacity', 'start_date']))
+                            <a href="{{ route('rooms.index') }}"
+                                class="text-red-500 text-sm hover:underline font-medium">Clear All</a>
+                        @endif
+                        <button type="submit"
+                            class="bg-blue-600 text-white px-6 py-2 rounded-lg text-sm font-bold hover:bg-blue-700 transition">
+                            <i class="fa-solid fa-magnifying-glass mr-2"></i> Find Rooms
+                        </button>
+                    </div>
+                </div>
             </form>
         </div>
 
@@ -95,7 +144,8 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="px-6 py-10 text-center text-gray-500 italic">No rooms found in the
+                                <td colspan="7" class="px-6 py-10 text-center text-gray-500 italic">No rooms found in
+                                    the
                                     inventory.</td>
                             </tr>
                         @endforelse
