@@ -3,6 +3,7 @@
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -27,5 +28,14 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
         Route::post('/store', [BookingController::class, 'store'])->name('bookings.store');
         Route::get('/{booking}/show', [BookingController::class, 'show'])->name('bookings.show');
         Route::patch('/{booking}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
+    });
+
+    Route::prefix('users')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('users.index');
+        Route::get('/create', [UserController::class, 'create'])->name('users.create');
+        Route::post('/store', [UserController::class, 'store'])->name('users.store');
+        Route::get('/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+        Route::put('/{user}/update', [UserController::class, 'update'])->name('users.update');
+        Route::delete('/{user}', [UserController::class, 'destroy'])->name('users.destroy');
     });
 });

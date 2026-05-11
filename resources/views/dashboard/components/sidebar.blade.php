@@ -34,7 +34,7 @@
             <div class="pt-4 pb-1">
                 <p class="text-xs font-semibold text-slate-500 uppercase px-3 tracking-wider">Admin Tools</p>
             </div>
-            <a href="#"
+            <a href="{{ route('users.index') }}"
                 class="flex items-center p-3 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
                 <i class="fa-solid fa-users-gear mr-3 w-5"></i> User Management
             </a>
