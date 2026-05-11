@@ -1,0 +1,29 @@
+<?php
+
+use App\Http\Controllers\BookingController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\RoomController;
+use Illuminate\Support\Facades\Route;
+
+Route::get('/', function () {
+    return redirect()->route('login');
+});
+
+Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::prefix('rooms')->group(function () {
+        Route::get('/', [RoomController::class, "index"])->name('rooms.index');
+        Route::get('/create', [RoomController::class, "create"])->name('rooms.create');
+        Route::post('/store', [RoomController::class, "store"])->name('rooms.store');
+        Route::get('/{room}/edit', [RoomController::class, "edit"])->name('rooms.edit');
+        Route::put('/{room}/update', [RoomController::class, "update"])->name('rooms.update');
+        Route::delete('/{room}/delete', [RoomController::class, "destroy"])->name('rooms.destroy');
+    });
+
+    Route::prefix('bookings')->group(function () {
+        Route::get('/', [BookingController::class, 'index'])->name('bookings.index');
+        Route::get('/create/{room?}', [BookingController::class, 'create'])->name('bookings.create');
+        Route::post('/store', [BookingController::class, 'store'])->name('bookings.store');
+    });
+});
