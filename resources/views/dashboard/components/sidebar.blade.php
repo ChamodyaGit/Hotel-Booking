@@ -30,14 +30,17 @@
             </a>
         @endif
 
-        @if (auth()->user()->role == 'admin')
+
+        @if (auth()->user()->role == 'admin' || auth()->user()->role == 'manager')
             <div class="pt-4 pb-1">
-                <p class="text-xs font-semibold text-slate-500 uppercase px-3 tracking-wider">Admin Tools</p>
+                <p class="text-xs font-semibold text-slate-500 uppercase px-3 tracking-wider">User Management</p>
             </div>
             <a href="{{ route('users.index') }}"
                 class="flex items-center p-3 rounded-lg {{ request()->routeIs('users.*') ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }} transition">
                 <i class="fa-solid fa-users-gear mr-3 w-5"></i> User Management
             </a>
+        @endif
+        @if (auth()->user()->role == 'admin')
             <a href="{{ route('audit.index') }}"
                 class="flex items-center p-3 rounded-lg {{ request()->routeIs('audit.*') ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }} transition">
                 <i class="fa-solid fa-clock-rotate-left mr-3 w-5"></i> Audit Trails
