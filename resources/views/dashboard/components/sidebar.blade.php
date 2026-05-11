@@ -21,7 +21,7 @@
                 <p class="text-xs font-semibold text-slate-500 uppercase px-3 tracking-wider">Reservations</p>
             </div>
             <a href="{{ route('bookings.index') }}"
-                class="flex items-center p-3 rounded-lg {{ request()->routeIs('bookings.*') ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }} transition">
+                class="flex items-center p-3 rounded-lg {{ request()->routeIs('bookings.index') ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }} transition">
                 <i class="fa-solid fa-calendar-check mr-3 w-5"></i> All Bookings
             </a>
             <a href="{{ route('bookings.create') }}"
