@@ -69,6 +69,10 @@ Start the Laravel development server using:
 ```bash
 php artisan serve
 ```
+Start the Frontend Development Server:
+```bash
+npm run dev
+```
 Once the server starts, open the following URL in your browser:
 ```text
 http://127.0.0.1:8000
