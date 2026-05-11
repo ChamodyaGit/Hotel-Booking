@@ -81,10 +81,8 @@ admin@gmail.com	123456789
 > ⚠️ For security purposes, please change the default password after the first login.
 ---
 📦 Tech Stack
-Backend: Laravel 11
+Backend: Laravel
 Frontend: Tailwind CSS
 Database: MySQL
-Authentication: Laravel Breeze / Custom Auth
-Icons & UI: Blade Components + Tailwind
 ---
 
