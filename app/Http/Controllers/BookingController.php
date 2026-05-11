@@ -6,12 +6,15 @@ use App\Helpers\Logger;
 use App\Models\Booking;
 use App\Models\Room;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class BookingController extends Controller
 {
     public function index(Request $request)
     {
+        abort_if(Auth::user()->role === 'admin', 403, 'Admins do not have permission to view bookings.');
+
         $query = Booking::withTrashed()->with([
             'room' => function ($q) {
                 $q->withTrashed();
@@ -40,6 +43,8 @@ class BookingController extends Controller
 
     public function store(Request $request)
     {
+
+        abort_if(Auth::user()->role === 'admin', 403, 'Admins cannot create bookings.');
         $request->validate([
             'room_id' => 'required|exists:rooms,id',
             'guest_name' => 'required|string|max:255',
@@ -117,6 +122,7 @@ class BookingController extends Controller
 
     public function cancel(Booking $booking)
     {
+        abort_if(Auth::user()->role === 'admin', 403, 'Admins cannot cancel bookings.');
         if ($booking->status !== 'Confirmed') {
             return back()->with('error', 'Only confirmed bookings can be cancelled.');
         }

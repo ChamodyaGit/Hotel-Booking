@@ -6,11 +6,16 @@ use App\Helpers\Logger;
 use App\Models\Booking;
 use App\Models\Room;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RoomController extends Controller
 {
     public function index(Request $request)
     {
+        if (Auth::user()->role === 'admin') {
+            abort(403, 'Administrators do not have permission to view the room inventory.');
+        }
+
         $query = Room::query();
 
         if ($request->filled('search')) {
@@ -60,11 +65,18 @@ class RoomController extends Controller
 
     public function create()
     {
+        if (Auth::user()->role !== 'manager') {
+            abort(403, 'Only Managers can access the room creation form.');
+        }
         return view('dashboard.pages.rooms.create');
     }
 
     public function store(Request $request)
     {
+        if (Auth::user()->role !== 'manager') {
+            abort(403, 'Only Managers are authorized to add new rooms.');
+        }
+
         $validated = $request->validate([
             'room_number' => 'required|unique:rooms,room_number|max:10',
             'room_type' => 'required|in:Single,Double,Suite',
@@ -87,11 +99,18 @@ class RoomController extends Controller
 
     public function edit(Room $room)
     {
+        if (Auth::user()->role !== 'manager') {
+            abort(403, 'Only Managers are authorized to edit room details.');
+        }
         return view('dashboard.pages.rooms.edit', compact('room'));
     }
 
     public function update(Request $request, Room $room)
     {
+        if (Auth::user()->role !== 'manager') {
+            abort(403, 'Only Managers are authorized to update room details.');
+        }
+
         $validated = $request->validate([
             'room_number' => 'required|max:10|unique:rooms,room_number,' . $room->id,
             'room_type' => 'required|in:Single,Double,Suite',
@@ -118,6 +137,9 @@ class RoomController extends Controller
 
     public function destroy(Room $room)
     {
+        if (Auth::user()->role !== 'manager') {
+            abort(403, 'Only Managers are authorized to remove rooms from the inventory.');
+        }
         $roomNumber = $room->room_number;
         $room->delete();
 
