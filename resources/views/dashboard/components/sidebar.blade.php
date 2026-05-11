@@ -21,11 +21,11 @@
                 <p class="text-xs font-semibold text-slate-500 uppercase px-3 tracking-wider">Reservations</p>
             </div>
             <a href="{{ route('bookings.index') }}"
-                class="flex items-center p-3 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
+                class="flex items-center p-3 rounded-lg {{ request()->routeIs('bookings.*') ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }} transition">
                 <i class="fa-solid fa-calendar-check mr-3 w-5"></i> All Bookings
             </a>
             <a href="{{ route('bookings.create') }}"
-                class="flex items-center p-3 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition ">
+                class="flex items-center p-3 rounded-lg {{ request()->routeIs('bookings.create') ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }} transition ">
                 <i class="fa-solid fa-plus-circle mr-3 w-5"></i> New Booking
             </a>
         @endif
@@ -35,11 +35,11 @@
                 <p class="text-xs font-semibold text-slate-500 uppercase px-3 tracking-wider">Admin Tools</p>
             </div>
             <a href="{{ route('users.index') }}"
-                class="flex items-center p-3 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
+                class="flex items-center p-3 rounded-lg {{ request()->routeIs('users.*') ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }} transition">
                 <i class="fa-solid fa-users-gear mr-3 w-5"></i> User Management
             </a>
             <a href="{{ route('audit.index') }}"
-                class="flex items-center p-3 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
+                class="flex items-center p-3 rounded-lg {{ request()->routeIs('audit.*') ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }} transition">
                 <i class="fa-solid fa-clock-rotate-left mr-3 w-5"></i> Audit Trails
             </a>
         @endif
@@ -48,7 +48,7 @@
             <p class="text-xs font-semibold text-slate-500 uppercase px-3 tracking-wider">System</p>
         </div>
         <a href="{{ route('profile.view') }}"
-            class="flex items-center p-3 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
+            class="flex items-center p-3 rounded-lg {{ request()->routeIs('profile.view') ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }} transition">
             <i class="fa-solid fa-user-circle mr-3 w-5"></i> My Profile
         </a>
 

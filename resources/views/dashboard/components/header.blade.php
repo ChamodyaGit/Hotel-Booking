@@ -8,8 +8,12 @@
 
     <div class="flex items-center space-x-4">
         <div class="text-right hidden sm:block px-2">
-            <p class="text-sm font-medium text-gray-900">Chamodya Punsara</p>
-            <p class="text-xs text-gray-500">Administrator</p>
+            <p class="text-sm font-medium text-gray-900">
+                {{ auth()->user()->name }}
+            </p>
+            <p class="text-xs text-gray-500 capitalize">
+                {{ auth()->user()->role }}
+            </p>
         </div>
         <div class="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">
             CP
