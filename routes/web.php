@@ -23,7 +23,9 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
 
     Route::prefix('bookings')->group(function () {
         Route::get('/', [BookingController::class, 'index'])->name('bookings.index');
-        Route::get('/create/{room?}', [BookingController::class, 'create'])->name('bookings.create');
+        Route::get('/create', [BookingController::class, 'create'])->name('bookings.create');
         Route::post('/store', [BookingController::class, 'store'])->name('bookings.store');
+        Route::get('/{booking}/show', [BookingController::class, 'show'])->name('bookings.show');
+        Route::patch('/{booking}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
     });
 });

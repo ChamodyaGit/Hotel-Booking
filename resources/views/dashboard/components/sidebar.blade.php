@@ -20,12 +20,12 @@
             <div class="pt-4 pb-1">
                 <p class="text-xs font-semibold text-slate-500 uppercase px-3 tracking-wider">Reservations</p>
             </div>
-            <a href="#"
+            <a href="{{ route('bookings.index') }}"
                 class="flex items-center p-3 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
                 <i class="fa-solid fa-calendar-check mr-3 w-5"></i> All Bookings
             </a>
-            <a href="#"
-                class="flex items-center p-3 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
+            <a href="{{ route('bookings.create') }}"
+                class="flex items-center p-3 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition ">
                 <i class="fa-solid fa-plus-circle mr-3 w-5"></i> New Booking
             </a>
         {{-- @endif --}}
