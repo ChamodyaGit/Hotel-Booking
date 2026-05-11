@@ -2,26 +2,44 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Booking;
+use App\Models\Room;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        // $totalRooms = Room::count();
-        // $availableRooms = Room::where('status', 'Available')->count();
-        // $todayBookings = Booking::whereDate('created_at', today())->count();
-        // $totalStaff = User::whereIn('role', ['manager', 'receptionist'])->count();
+        $totalRooms = Room::count();
+        $availableRoomsNow = Room::where('status', 'Available')->count();
 
-        // $recentBookings = Booking::with('room')->latest()->take(5)->get();
+        $today = Carbon::today();
+        $todaysBookingsCount = Booking::whereDate('check_in', '<=', $today)
+            ->whereDate('check_out', '>=', $today)
+            ->where('status', 'Confirmed')
+            ->count();
+        $expectedCheckIns = Booking::whereDate('check_in', $today)
+            ->where('status', 'Confirmed')
+            ->count();
 
-        // return view('dashboard.pages.dashboard.index', compact(
-        //     'totalRooms',
-        //     'availableRooms',
-        //     'todayBookings',
-        //     'totalStaff',
-        //     'recentBookings'
-        // ));
-        return view('dashboard.pages.dashboard.index');
+        $activeStaff = User::count();
+
+        $upcomingBookings = Booking::with('room')
+            ->where('check_in', '>=', $today)
+            ->where('status', 'Confirmed')
+            ->orderBy('check_in', 'asc')
+            ->take(5)
+            ->get();
+
+        return view('dashboard.pages.dashboard.index', compact(
+            'totalRooms',
+            'availableRoomsNow',
+            'todaysBookingsCount',
+            'expectedCheckIns',
+            'activeStaff',
+            'upcomingBookings'
+        ));
     }
 }

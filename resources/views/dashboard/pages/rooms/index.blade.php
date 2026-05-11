@@ -7,10 +7,12 @@
                 <h1 class="text-2xl font-bold text-gray-800">Room Inventory</h1>
                 <p class="text-sm text-gray-600">Manage all hotel rooms and their status.</p>
             </div>
-            <a href="{{ route('rooms.create') }}"
-                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold flex items-center transition">
-                <i class="fa-solid fa-plus mr-2"></i> Add New Room
-            </a>
+            @if (auth()->user()->role === 'manager')
+                <a href="{{ route('rooms.create') }}"
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold flex items-center transition">
+                    <i class="fa-solid fa-plus mr-2"></i> Add New Room
+                </a>
+            @endif
         </div>
 
         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-6">
@@ -98,7 +100,9 @@
                             <th class="px-6 py-4">Capacity</th>
                             <th class="px-6 py-4 text-end">Price</th>
                             <th class="px-6 py-4">Status</th>
-                            <th class="px-6 py-4 text-center">Actions</th>
+                            @if (auth()->user()->role === 'manager')
+                                <th class="px-6 py-4 text-center">Actions</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100 text-sm">
@@ -125,22 +129,24 @@
                                             class="bg-red-100 text-red-700 px-2 py-1 rounded-full text-xs font-bold uppercase">Maintenance</span>
                                     @endif
                                 </td>
-                                <td class="px-6 py-4 text-center space-x-2">
-                                    <a href="{{ route('rooms.edit', $room->id) }}"
-                                        class="text-blue-600 hover:text-blue-900">
-                                        <i class="fa-solid fa-pen-to-square"></i>
-                                    </a>
+                                @if (auth()->user()->role === 'manager')
+                                    <td class="px-6 py-4 text-center space-x-2">
+                                        <a href="{{ route('rooms.edit', $room->id) }}"
+                                            class="text-blue-600 hover:text-blue-900">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </a>
 
-                                    <form action="{{ route('rooms.destroy', $room->id) }}" method="POST"
-                                        id="delete-form-{{ $room->id }}" class="inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="button" onclick="confirmDelete('{{ $room->id }}')"
-                                            class="text-red-600 hover:text-red-900">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </button>
-                                    </form>
-                                </td>
+                                        <form action="{{ route('rooms.destroy', $room->id) }}" method="POST"
+                                            id="delete-form-{{ $room->id }}" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="button" onclick="confirmDelete('{{ $room->id }}')"
+                                                class="text-red-600 hover:text-red-900">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                @endif
                             </tr>
                         @empty
                             <tr>

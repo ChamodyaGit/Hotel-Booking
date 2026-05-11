@@ -9,14 +9,14 @@
             <i class="fa-solid fa-gauge mr-3 w-5"></i> Dashboard
         </a>
 
-        {{-- @if (auth()->user()->role == 'manager' || auth()->user()->role == 'receptionist') --}}
+        @if (auth()->user()->role == 'manager' || auth()->user()->role == 'receptionist')
             <a href="{{ route('rooms.index') }}"
                 class="flex items-center p-3 rounded-lg {{ request()->routeIs('rooms.*') ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }} transition">
                 <i class="fa-solid fa-bed mr-3 w-5"></i> Room Inventory
             </a>
-        {{-- @endif --}}
+        @endif
 
-        {{-- @if (auth()->user()->role == 'manager' || auth()->user()->role == 'receptionist') --}}
+        @if (auth()->user()->role == 'manager' || auth()->user()->role == 'receptionist')
             <div class="pt-4 pb-1">
                 <p class="text-xs font-semibold text-slate-500 uppercase px-3 tracking-wider">Reservations</p>
             </div>
@@ -28,9 +28,9 @@
                 class="flex items-center p-3 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition ">
                 <i class="fa-solid fa-plus-circle mr-3 w-5"></i> New Booking
             </a>
-        {{-- @endif --}}
+        @endif
 
-        {{-- @if (auth()->user()->role == 'admin') --}}
+        @if (auth()->user()->role == 'admin')
             <div class="pt-4 pb-1">
                 <p class="text-xs font-semibold text-slate-500 uppercase px-3 tracking-wider">Admin Tools</p>
             </div>
@@ -42,7 +42,7 @@
                 class="flex items-center p-3 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
                 <i class="fa-solid fa-clock-rotate-left mr-3 w-5"></i> Audit Trails
             </a>
-        {{-- @endif --}}
+        @endif
 
         <div class="pt-4 pb-1">
             <p class="text-xs font-semibold text-slate-500 uppercase px-3 tracking-wider">System</p>
