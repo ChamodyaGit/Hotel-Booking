@@ -16,11 +16,20 @@
                 <form action="{{ route('bookings.store') }}" method="POST" class="p-6 space-y-6">
                     @csrf
 
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Guest Full Name</label>
-                        <input type="text" name="guest_name" value="{{ old('guest_name') }}" required
-                            class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 shadow-sm"
-                            placeholder="Enter guest name">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Guest Full Name</label>
+                            <input type="text" name="guest_name" value="{{ old('guest_name') }}" required
+                                class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                                placeholder="Enter guest name">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Contact Number</label>
+                            <input type="text" name="contact_number" value="{{ old('contact_number') }}" required
+                                class="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                                placeholder="Enter contact number">
+                        </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -31,7 +40,8 @@
                                 <option value="">-- Choose a Room --</option>
                                 @foreach ($rooms as $room)
                                     <option value="{{ $room->id }}">Room {{ $room->room_number }}
-                                        ({{ $room->room_type }})</option>
+                                        ({{ $room->room_type }})
+                                    </option>
                                 @endforeach
                             </select>
                             <p class="text-xs text-gray-400 mt-1 italic font-medium">* Only currently available rooms are

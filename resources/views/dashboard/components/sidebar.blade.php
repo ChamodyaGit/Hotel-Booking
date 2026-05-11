@@ -38,7 +38,7 @@
                 class="flex items-center p-3 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
                 <i class="fa-solid fa-users-gear mr-3 w-5"></i> User Management
             </a>
-            <a href="#"
+            <a href="{{ route('audit.index') }}"
                 class="flex items-center p-3 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
                 <i class="fa-solid fa-clock-rotate-left mr-3 w-5"></i> Audit Trails
             </a>
@@ -47,7 +47,7 @@
         <div class="pt-4 pb-1">
             <p class="text-xs font-semibold text-slate-500 uppercase px-3 tracking-wider">System</p>
         </div>
-        <a href="{{ route('profile.show') }}"
+        <a href="{{ route('profile.view') }}"
             class="flex items-center p-3 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
             <i class="fa-solid fa-user-circle mr-3 w-5"></i> My Profile
         </a>

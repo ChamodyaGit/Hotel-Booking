@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Logger;
 use App\Models\Room;
 use Illuminate\Http\Request;
 
@@ -47,6 +48,12 @@ class RoomController extends Controller
 
         Room::create($validated);
 
+        Logger::log(
+            'Create Room',
+            'Rooms',
+            "New room #{$request->room_number} ({$request->room_type}) was added to the inventory."
+        );
+
         return redirect()->route('rooms.index')->with('success', 'Room has been added successfully!');
     }
 
@@ -66,14 +73,31 @@ class RoomController extends Controller
             'status' => 'required|in:Available,Booked,Cleaning,Maintenance',
         ]);
 
+        $oldStatus = $room->status;
+        $roomNumber = $room->room_number;
+
         $room->update($validated);
+
+        $description = "Details updated for Room #{$roomNumber}.";
+        if ($oldStatus !== $request->status) {
+            $description .= " Status changed from '{$oldStatus}' to '{$request->status}'.";
+        }
+
+        Logger::log('Update Room', 'Rooms', $description);
 
         return redirect()->route('rooms.index')->with('success', 'Room details updated successfully!');
     }
 
     public function destroy(Room $room)
     {
+        $roomNumber = $room->room_number;
         $room->delete();
+
+        Logger::log(
+            'Delete Room',
+            'Rooms',
+            "Room #{$roomNumber} was moved to trash (Soft Deleted)."
+        );
 
         return redirect()->route('rooms.index')->with('success', 'Room has been moved to trash successfully!');
     }

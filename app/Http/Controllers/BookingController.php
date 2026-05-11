@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Logger;
 use App\Models\Booking;
 use App\Models\Room;
 use Illuminate\Http\Request;
@@ -11,7 +12,11 @@ class BookingController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Booking::with('room');
+        $query = Booking::withTrashed()->with([
+            'room' => function ($q) {
+                $q->withTrashed();
+            }
+        ]);
 
         if ($request->filled('search')) {
             $searchTerm = strtolower($request->search);
@@ -38,6 +43,7 @@ class BookingController extends Controller
         $request->validate([
             'room_id' => 'required|exists:rooms,id',
             'guest_name' => 'required|string|max:255',
+            'contact_number' => 'required|string|max:15',
             'check_in' => 'required|date|after_or_equal:today',
             'check_out' => 'required|date|after:check_in',
         ]);
@@ -47,12 +53,14 @@ class BookingController extends Controller
         $checkOut = $request->check_out;
 
         $room = Room::findOrFail($roomId);
-        if ($room->status === 'Cleaning') {
-            return back()->withInput()->with('error', 'This room is currently being cleaned. Please wait until it is ready.');
-        }
 
-        if ($room->status === 'Maintenance') {
-            return back()->withInput()->with('error', 'This room is under maintenance and cannot be booked.');
+        if ($room->status === 'Cleaning' || $room->status === 'Maintenance') {
+            Logger::log(
+                'Booking Denied',
+                'Bookings',
+                "Booking attempt failed for Room #{$room->room_number} due to status: {$room->status}."
+            );
+            return back()->withInput()->with('error', "This room is currently under {$room->status} and cannot be booked.");
         }
 
         $isAlreadyBooked = Booking::where('room_id', $roomId)
@@ -71,6 +79,11 @@ class BookingController extends Controller
             })->exists();
 
         if ($isAlreadyBooked) {
+            Logger::log(
+                'Overlap Detected',
+                'Bookings',
+                "System blocked a double-booking attempt for Room #{$room->room_number} on {$checkIn} to {$checkOut}."
+            );
             return back()->withInput()->with('error', 'Double-booking detected! This room is already reserved for the selected dates.');
         }
 
@@ -78,12 +91,19 @@ class BookingController extends Controller
             Booking::create([
                 'room_id' => $request->room_id,
                 'guest_name' => $request->guest_name,
+                'contact_number' => $request->contact_number,
                 'check_in' => $request->check_in,
                 'check_out' => $request->check_out,
                 'status' => 'Confirmed',
             ]);
 
             $room->update(['status' => 'Booked']);
+
+            Logger::log(
+                'New Booking',
+                'Bookings',
+                "Room #{$room->room_number} booked for '{$request->guest_name}' from {$request->check_in} to {$request->check_out}."
+            );
         });
 
         return redirect()->route('bookings.index')->with('success', 'Reservation confirmed successfully!');
@@ -104,6 +124,12 @@ class BookingController extends Controller
         DB::transaction(function () use ($booking) {
             $booking->update(['status' => 'Cancelled']);
             $booking->room->update(['status' => 'Available']);
+
+            Logger::log(
+                'Booking Cancelled',
+                'Bookings',
+                "Booking for '{$booking->guest_name}' (Room #{$booking->room->room_number}) was cancelled by user."
+            );
         });
 
         return redirect()->route('bookings.index')->with('success', 'Booking has been cancelled and the room is now available.');

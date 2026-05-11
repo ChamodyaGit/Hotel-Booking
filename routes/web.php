@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\AuditController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -37,5 +39,15 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
         Route::get('/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
         Route::put('/{user}/update', [UserController::class, 'update'])->name('users.update');
         Route::delete('/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+    });
+
+    Route::prefix('profile')->group(function () {
+        Route::get('/', [ProfileController::class, 'edit'])->name('profile.view');
+        Route::put('/update-info', [ProfileController::class, 'update'])->name('profile.info.update');
+        Route::put('/update-password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
+    });
+
+    Route::prefix('audit')->group(function () {
+        Route::get('/', [AuditController::class, 'index'])->name('audit.index');
     });
 });
