@@ -1,68 +1,90 @@
-# 🏨 Hotel Booking & Management System
-
-A professional Hotel Management System built with **Laravel 11**, **Tailwind CSS**, and **MySQL**. This system includes room inventory, booking management, user roles (Admin/Manager/Receptionist), and a full Audit Trail.
-
+🏨 Hotel Booking & Management System
+A professional Hotel Booking & Management System built with Laravel 11, Tailwind CSS, and MySQL.  
+This system includes:
+🛏️ Room Inventory Management
+📅 Booking & Reservation Management
+👥 User Role Management (Admin / Manager / Receptionist)
+📊 Audit Trail & Activity Logging
+🔐 Secure Authentication & Authorization
+📱 Responsive User Interface
 ---
-
-## 🛠️ Prerequisites
-
-Before you begin, ensure you have the following installed:
-* **PHP 8.2** or higher
-* **Composer**
-* **Node.js & NPM** (for frontend assets)
-* **MySQL** or **MariaDB**
-* **XAMPP/WampServer** (optional, for local DB)
-
+🛠️ Prerequisites
+Before you begin, ensure you have the following installed on your machine:
+PHP 8.2 or higher
+Composer
+Node.js & NPM
+MySQL or MariaDB
+XAMPP / WampServer (optional for local database setup)
 ---
-
-## 🚀 Installation Steps
-
-Follow these steps to get the project running locally:
-
-### 1. Clone the Project
+🚀 Installation Guide
+Follow the steps below to set up the project locally.
+1️⃣ Clone the Repository
 ```bash
 git clone https://github.com/ChamodyaGit/Hotel-Booking.git
-cd hotel-booking
-
-2. Install Dependencies
-Install PHP dependencies via Composer and Frontend packages via NPM:
-
+cd Hotel-Booking
+```
+---
+2️⃣ Install Dependencies
+Install PHP and frontend dependencies.
+Install Composer Dependencies
+```bash
 composer install
+```
+Install NPM Packages
+```bash
 npm install
-
-3. Environment Configuration
-Copy the example environment file and generate a unique application key:
-
+```
+---
+3️⃣ Configure Environment File
+Copy the example environment file and generate the application key.
+```bash
 cp .env.example .env
 php artisan key:generate
-
-4. Database Setup
-Create a new database in your MySQL (e.g., hotel_db).
-
-Open your .env file and update the database credentials:
-
+```
+---
+4️⃣ Database Configuration
+Create a new database in MySQL.
+Example database name:
+```text
+hotel_db
+```
+Then update your `.env` file with the correct database credentials.
+```env
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE=hotel_db
 DB_USERNAME=root
 DB_PASSWORD=
-
-5. Run Migrations & Seeders
-Create the table structure and populate initial data
-
+```
+---
+5️⃣ Run Database Migrations & Seeders
+Create all database tables and insert default system data.
+```bash
 php artisan migrate --seed
-
+```
+---
 🖥️ Running the Application
-Once the setup is complete, start the local development server:
-
+Start the Laravel development server using:
+```bash
 php artisan serve
+```
+Once the server starts, open the following URL in your browser:
+```text
+http://127.0.0.1:8000
+```
+---
+🔐 Default Admin Login
+Use the following credentials to log in as the administrator for the first time.
+Email	Password
+admin@gmail.com	123456789
+> ⚠️ For security purposes, please change the default password after the first login.
+---
+📦 Tech Stack
+Backend: Laravel 11
+Frontend: Tailwind CSS
+Database: MySQL
+Authentication: Laravel Breeze / Custom Auth
+Icons & UI: Blade Components + Tailwind
+---
 
-## 🔐 Default Credentials
-
-You can use the following credentials to log in as an Administrator for the first time:
-
-* **Email:** `admin@gmail.com`
-* **Password:** `123456789`
-
-> **Note:** For security reasons, please ensure you change the password or create a new admin account via the Profile Settings once you log in.
